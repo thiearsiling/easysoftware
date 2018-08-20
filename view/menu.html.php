@@ -12,6 +12,10 @@
 			</div>
 			<div class = "navbar-collapse collapse">
 				<ul class = "nav navbar-nav">
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><strong><?php echo $_SESSION["login"] ?></strong></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="../controller/p_sair.php">Sair</a></li>
+</ul>
 					<li><a href="index.php">Início</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><strong>Paciente</strong></a>
 						<ul class="dropdown-menu" role="menu">

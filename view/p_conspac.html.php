@@ -102,14 +102,16 @@ while($dados2=MYSQLI_FETCH_ARRAY($paciente->querya)){ //Exibição dos dados.
 
 $dt_inclusao_arquivo=strtotime($dados2["dt_inclusao_arquivo"]);
 print "<li>".$dados2["nm_arquivo"]." - incluso em ".date("d/m/Y h:i:s",$dt_inclusao_arquivo)." - ".$dados2["ds_arquivo"]."</li>";
-print "<ul><li><a class='btn btn-link' href='../controller/download.php?arquivo=".$dados2["nm_arquivo"]."'>Baixar</a></li></ul>";
+print "<ul>";
+print "<li><a class='btn btn-link' href='../controller/download.php?arquivo=".$dados2["nm_arquivo"]."'>Baixar</a></li>";
+print "<li><a class='btn btn-link' href='../controller/p_compart_paciente.php?cd_arquivo=".$dados2["cd_arquivo"]."&cd_paciente=".$_GET["cd_paciente"]."' target='_blank'>Compartilhar com paciente</a></li>";
+print "</ul>";
 }
 
 print "</ul>";
 ?>
-</ul>
-</div>
 
+</div>
 				<?php
 				} //Fim da exibição dos dados.
 				?>

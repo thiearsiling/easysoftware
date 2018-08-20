@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-br" ng-app>
 	<head>
    	<!-- Template  (Ricardo Gomes & Rodrigo Bruno) -->

@@ -1,4 +1,5 @@
 <?php
+SESSION_START();
 include("../model/auth.php");
 $auth=new auth();
 $auth->exibirEmpresa(); //Executa a query.
@@ -7,7 +8,7 @@ if (!isset($_POST["email"]))
 {include("../view/auth.html.php");}
 else
 {
-session_start();
+
 $email=$_POST["email"];
 $ds_password=$_POST["ds_password"];
 $auth->login($email,$ds_password);
