@@ -1,59 +1,55 @@
 <!DOCTYPE html>
 <html lang="pt-br" ng-app>
+
 <head>
 	<title>Sistema EasyCare</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../vendor/css/paper.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.css">  
+
 </head>
+
 <body>
+
 <?php
 include("../view/menu.html.php");
 ?>
-<div class="container">
-<!-- inicio da linha dos dados da empresa -->
-<div class="row">
-<!-- inicio da coluna dos dados da empresa -->
-<div class="col-lg-6">
-<div class="panel panel-primary">
-<div class="panel-heading">
-<h3 class="panel-title">Lista de Empresas</h3>
-</div>
-<div class="panel-body">
-<div class="form-group">
-<a class="btn btn-link" href="../controller/p_cadempresa.php">Nova empresa</a>
-</div>
-<div class="table-responsive">
-<table class="table">
-<thead>
-<tr>
-<td>Nome</td>
-<td>CNPJ</td>
-<td>Razão Social</td>
-</tr>
-</thead>
-<tbody>
-<tr>
-<?php
-				while($dados=MYSQLI_FETCH_ARRAY($empresa->queryi)){ //laço com as empresas
-echo "<td>".$dados["nm_empresa"]."</td>";
-echo "<td>".$dados["nr_cnpj"]."</td>";
-echo "<td>".$dados["ds_razaosocial"]."</td>";
-//Fim do laço com as empresas
-				}
-		
-?>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- fim da coluna dos dados basicos -->
-</div>
-</div>
 
-</div>
+<main class="w-100 p-1 mb-3">
+    <div class="container">
+        <div class="col-10 offset-1">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Empresas</h3>
+                </div>
+                <div class="card-body">
+                    <a class="btn btn-primary float-right mb-3" href="../controller/p_cadempresa.php">Nova Empresa</a>
+                    <table class="table table-sm table-bordered table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>CNPJ</th>
+                                <th>Nome</th>
+                                <th>Razão Social</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while($dados=MYSQLI_FETCH_ARRAY($empresa->queryi)){ ?>
+                                <tr>
+                                    <td><?php echo $dados["nr_cnpj"];?></td>
+                                    <td><?php echo $dados["nm_empresa"];?></td>
+                                    <td><?php echo $dados["ds_razaosocial"];?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<?php
+include("../view/footer.html.php");
+?>
 
 <script src="../vendor/script/jquery-3.1.1.min.js"></script>
 <script src="../vendor/script/bootstrap.min.js"></script>

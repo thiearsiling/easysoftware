@@ -1,7 +1,9 @@
-﻿<script src="../view/js/jquery-3.1.1.min.js"></script>
-<script src="../view/js/bootstrap.min.js"></script>
-<script src="../view/js/loadingoverlay.js"></script>
-<script src="../view/js/loader.js"></script>
-
-</body>
-</html>
+<footer>
+    <nav class="navbar navbar-expand-lg fixed-bottom bg-light p-0">
+        <div class="container">
+            <div class="row">
+                <span class="float-left small">©<?php echo date('Y');?> Easy Software. Todos os direitos reservados.</span>  
+            </div>
+        </div>
+    </nav>
+</footer>

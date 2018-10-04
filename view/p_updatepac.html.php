@@ -40,6 +40,9 @@ if (!isset($_POST["cd_paciente"]))
 }
 ?>
 	</div>
+<?php
+include("../view/footer.html.php");
+?>
 
 <script src="../vendor/script/jquery-3.1.1.min.js"></script>
 <script src="../vendor/script/bootstrap.min.js"></script>

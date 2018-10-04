@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br" ng-app>
+    
 <head>
 	<title>Sistema EasyCare</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="../vendor/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../vendor/css/paper.css">
+    <link rel="stylesheet" href="../vendor/css/bootstrap.css">
 </head>
+
 <body>
 <?php
 include("../view/menu.html.php");
@@ -16,6 +17,23 @@ include("../view/menu.html.php");
 if (isset($_GET["cd_paciente"])) //Verifica se a variável existe, para só então montar o HTML com os dados.
 {
 ?>
+
+<main class="w-100 p-1 mb-5">
+    <div class="container">
+        <div class="col-10 offset-1">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Consulta de Pacientes</h3>
+                </div>
+                <div class="card-body"></div>
+            </div>
+        </div>
+    
+
+
+
+
+
 <div class="container">
 <!-- inicio da linha dos dados basicos -->
 <div class="row">
@@ -60,18 +78,30 @@ echo "<p>Endereço: ".$dados["ds_endereco"]." - ".$dados["nm_bairro"]." - ".$dad
             </div>
             <div class="modal-body">
                 <p>
-				<form id="frm" action="../controller/adicarquivo.php" method="post" enctype="multipart/form-data">
+				<form id="form1" name="form1" id="frm" action="" method="post" enctype="multipart/form-data">
 				<input type="hidden" id="cd_paciente" name="cd_paciente" value="<?php echo $_GET['cd_paciente'] ?>">
 				<div class="form-group">
 				<label>Selecione o documento para este paciente</label>
-				<input class="form-control" type="file" id="arquivo" name="arquivo">
+				<input class="form-control" type="file" id="arquivo" name="arquivo" required>
 				</div>
 				<div class="form-group">
 				<label>Descrição</label>
-				<input class="form-control" type="text" id="ds_arquivo" name="ds_arquivo">
+				<input class="form-control" type="text" id="ds_arquivo" name="ds_arquivo" ng-model="arquivo.ds_arquivo" required>
+						<p class="text-info" ng-show="form1.ds_arquivo.$error.required">Informe uma descrição clara para o documento</p>
 				</div>
+<div class="form-group">
+<label>Classificação</label>
+<select class="form-control" id="cd_classificacao" name="cd_classificacao" ng-model="arquivo.cd_classificacao" required>
+<?php
+while($dados2=MYSQLI_FETCH_ARRAY($paciente->queryi2)){
+print "<option value='".$dados2["cd_classificacao"]."'>".$dados2["nm_classificacao"]."</option>";
+}
+?>
+</select>
+						<p class="text-info" ng-show="form1.cd_classificacao.$error.required">Selecione uma classificação para o documento</p>
+</div>
 				<div class="form-group">
-				<input id="btnSalvar" class="btn btn-primary" type="submit" value="Ok">
+				<input id="btnSalvar" class="btn btn-primary" type="button" value="Ok" ng-disabled="!form1.$valid">
 				</div>
 				</form>
 				
@@ -94,23 +124,34 @@ echo "<p>Endereço: ".$dados["ds_endereco"]." - ".$dados["nm_bairro"]." - ".$dad
 <h3 class="panel-title">Arquivos</h3>
 </div>
 <div class="panel-body">
-
+<table class="table-responsive">
+<tr>
+<th>Arquivo</th>
+<th>Data de adição</th>
+<th>Descrição</th>
+<th>Classificação</th>
+<th>Opções</th>
+</tr>
+<tr>
 <?php
 $paciente->paciente_arquivo($_GET["cd_paciente"]);
-print "<ul class='list-unstyled'>";
+$paciente->getPerfil($_SESSION["login"]);
 while($dados2=MYSQLI_FETCH_ARRAY($paciente->querya)){ //Exibição dos dados.
 
 $dt_inclusao_arquivo=strtotime($dados2["dt_inclusao_arquivo"]);
-print "<li>".$dados2["nm_arquivo"]." - incluso em ".date("d/m/Y h:i:s",$dt_inclusao_arquivo)." - ".$dados2["ds_arquivo"]."</li>";
-print "<ul>";
-print "<li><a class='btn btn-link' href='../controller/download.php?arquivo=".$dados2["nm_arquivo"]."'>Baixar</a></li>";
-print "<li><a class='btn btn-link' href='../controller/p_compart_paciente.php?cd_arquivo=".$dados2["cd_arquivo"]."&cd_paciente=".$_GET["cd_paciente"]."' target='_blank'>Compartilhar com paciente</a></li>";
-print "</ul>";
+print "<td>".$dados2["nm_arquivo"]."</td>";
+print "<td>".date("d/m/Y h:i:s",$dt_inclusao_arquivo)."</td>";
+print "<td>".$dados2["ds_arquivo"]."</td>";
+print "<td>".$dados2["nm_classificacao"]."</td>";
+print "<td><a class='btn btn-link' href='../controller/download.php?arquivo=".$dados2["nm_arquivo"]."'>Baixar</a></td>";
+print "<td><a href='#' onClick=excluirArquivo('".$dados2["nm_arquivo"]."',".$paciente->result["cd_usuario"].")>Excluir</a></td>";
+
 }
 
-print "</ul>";
 ?>
-
+</tr>
+</table>
+<a class="btn btn-link" href="../controller/p_compartpaciente.php?cd_paciente=<?php echo $_GET['cd_paciente'] ?>" target="_blank">Liberar documentos para paciente</a>
 </div>
 				<?php
 				} //Fim da exibição dos dados.
@@ -118,13 +159,22 @@ print "</ul>";
 				
 </div>
 
+</div>
+            </main>
+<?php
+include("../view/footer.html.php");
+?>
+
 <script src="../vendor/script/jquery-3.1.1.min.js"></script>
+<script src="../vendor/script/jquery.form.min.js"></script>
 <script src="../vendor/script/bootstrap.min.js"></script>
 <script src="../vendor/script/loadingoverlay.js"></script>
 <script src="../vendor/script/loader.js"></script>
 <script src="../vendor/script/angular.min.js"></script>
 <script src="../script/_global/completadata.js"></script>
 <script src="../script/_global/ajax.js"></script>
+
+<script src="../script/paciente/salvar.js"></script>
 
 </body>
 </html>
